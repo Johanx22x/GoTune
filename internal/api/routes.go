@@ -54,5 +54,11 @@ func RegisterRoutes(router *mux.Router, db *sql.DB) *mux.Router {
     router.HandleFunc("/albums/{id}", albumHandler.UpdateAlbum).Methods(http.MethodPut)
     router.HandleFunc("/albums/{id}", albumHandler.RemoveAlbum).Methods(http.MethodDelete)
 
+    // Create stream handler 
+    streamHandler := handlers.NewStreamHandler()
+
+    // Register stream routes 
+    router.HandleFunc("/stream/{id}", streamHandler.StreamSong).Methods(http.MethodGet)
+
     return router
 }
