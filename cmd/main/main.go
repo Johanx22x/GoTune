@@ -31,6 +31,7 @@ func main() {
 
     // Serve the API on designated port
     fmt.Println("Serving API on port " + config.Port)
+    fmt.Println("Press CTRL+C to stop the server")
     http.Handle("/", router)
     http.ListenAndServe(":"+config.Port, nil)
 }

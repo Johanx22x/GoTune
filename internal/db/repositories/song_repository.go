@@ -22,7 +22,7 @@ func NewSongRepository(db *sql.DB) *SongRepository {
 func (r *SongRepository) GetSongs() ([]*models.Song, error) {
     songs := make([]*models.Song, 0)
 
-    rows, err := r.db.Query("SELECT * FROM songs")
+    rows, err := r.db.Query("SELECT * FROM song")
     if err != nil {
         return nil, err
     }
