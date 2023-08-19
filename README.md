@@ -16,7 +16,7 @@ Institute of Technology.
 ## Features
 
 - Create, retrieve, update, and delete songs, albums, and playlists.
-- Stream audio files using Goroutines for efficient concurrent handling.
+- Streams aulio files using request multiprocessing.
 - SQLite database for data storage and retrieval.
 - RESTful API for interacting with the backend.
 
