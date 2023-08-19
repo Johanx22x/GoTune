@@ -43,15 +43,9 @@ go mod download
 go run cmd/main/main.go
 ```
 
-## API Endpoints
+## API docs
 
-- `/songs`: Manage songs (GET, POST)
-- `/songs/{id}`: Retrieve, update, or delete a song (GET, PUT, DELETE)
-- `/albums`: Manage albums (GET, POST)
-- `/albums/{id}`: Retrieve, update, or delete an album (GET, PUT, DELETE)
-- `/playlists`: Manage playlists (GET, POST)
-- `/playlists/{id}`: Retrieve, update, or delete a playlist (GET, PUT, DELETE)
-- `/stream/{id}`: Stream audio for a song (GET)
+Review the [API documentation](docs/API.md) to understand how it works.
 
 
 ## Contributing
