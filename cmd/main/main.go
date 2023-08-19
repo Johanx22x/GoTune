@@ -3,12 +3,11 @@ package main
 import (
 	"errors"
 	"fmt"
-	"net/http"
+	"net"
 
 	"github.com/Johanx22x/GoTune"
 	"github.com/Johanx22x/GoTune/internal/api"
 	"github.com/Johanx22x/GoTune/internal/db"
-	"github.com/gorilla/mux"
 )
 
 func main() {
@@ -23,15 +22,24 @@ func main() {
     fmt.Println("Database connection established")
     defer db.Close()
 
-    // Create router
-    router := mux.NewRouter()
+    // Start TCP server
+    listener, err := net.Listen("tcp", fmt.Sprintf(":%v", config.Port))
+    if err != nil {
+        panic(errors.New("could not start TCP server"))
+    }
+    fmt.Println("TCP server started")
+    defer listener.Close()
 
-    // Register routes
-    api.RegisterRoutes(router, db)
+    // Receive connections
+    for {
+        conn, err := listener.Accept()
 
-    // Serve the API on designated port
-    fmt.Println("Serving API on port " + config.Port)
-    fmt.Println("Press CTRL+C to stop the server")
-    http.Handle("/", router)
-    http.ListenAndServe(":"+config.Port, nil)
+        if err != nil {
+            fmt.Println("could not accept connection")
+            continue
+        }
+
+        // Deploy goroutine to handle connection
+        go api.HandleConnection(conn, db)
+    }
 }

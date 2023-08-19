@@ -1,11 +1,10 @@
 package handlers
 
 import (
-    "io"
-    "net/http"
-    "os"
-    "github.com/gorilla/mux"
-    "github.com/Johanx22x/GoTune"
+	"io"
+	"os"
+
+	"github.com/Johanx22x/GoTune"
 )
 
 type StreamHandler struct {}
@@ -15,27 +14,26 @@ func NewStreamHandler() *StreamHandler {
 }
 
 // StreamSongHandler streams a song from the server to the client
-func (sh *StreamHandler) StreamSong(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	songID := vars["id"]
-
+func (sh *StreamHandler) StreamSong(songID string) (string, error) {
+    // Get songs path
     config := gotune.LoadConfig(true)
     musicPath := config.MusicPath
 
+    // Get song file
 	filePath := musicPath + "/" + songID + ".mp3"
 
+    // Open file
 	file, err := os.Open(filePath)
 	if err != nil {
-		http.Error(w, "File not found", http.StatusNotFound)
-		return
+        return "", err
 	}
 	defer file.Close()
 
-	w.Header().Set("Content-Type", "audio/mpeg")
+    // Prepare response
+    content, err := io.ReadAll(file)
+    if err != nil {
+        return "", err
+    }
 
-	_, err = io.Copy(w, file)
-	if err != nil {
-		http.Error(w, "Error streaming audio", http.StatusInternalServerError)
-		return
-	}
+    return string(content), nil
 }
