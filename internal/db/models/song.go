@@ -7,5 +7,4 @@ type Song struct {
     Duration    int     // Seconds
     ReleaseDate int64   // Unix timestamp
     Genre       string 
-    Location    string  // Path to file
 }
