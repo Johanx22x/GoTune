@@ -125,8 +125,8 @@ DELETE playlists <PLAYLIST_ID>
 - Delete Album
 
 ```bash
-    DELETE albums <ALBUM_ID>
-    ```
+DELETE albums <ALBUM_ID>
+```
 
 ### STREAM Requests
 
