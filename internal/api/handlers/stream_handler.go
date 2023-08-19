@@ -5,6 +5,7 @@ import (
     "net/http"
     "os"
     "github.com/gorilla/mux"
+    "github.com/Johanx22x/GoTune"
 )
 
 type StreamHandler struct {}
@@ -18,7 +19,10 @@ func (sh *StreamHandler) StreamSong(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	songID := vars["id"]
 
-	filePath := "data/music/" + songID + ".mp3"
+    config := gotune.LoadConfig(true)
+    musicPath := config.MusicPath
+
+	filePath := musicPath + songID + ".mp3"
 
 	file, err := os.Open(filePath)
 	if err != nil {
