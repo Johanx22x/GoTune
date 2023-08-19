@@ -22,7 +22,7 @@ func (sh *StreamHandler) StreamSong(w http.ResponseWriter, r *http.Request) {
     config := gotune.LoadConfig(true)
     musicPath := config.MusicPath
 
-	filePath := musicPath + songID + ".mp3"
+	filePath := musicPath + "/" + songID + ".mp3"
 
 	file, err := os.Open(filePath)
 	if err != nil {
