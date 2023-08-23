@@ -24,6 +24,8 @@ func ProcessTCPRequest(message string, db *sql.DB) (string, error) {
         return processDeleteRequest(words, db)
     case "STREAM":
         return processStreamRequest(words, db)
+    case "HANDSHAKE":
+        return "OK", nil
     default:
         return "", errors.New("invalid request")
     }
