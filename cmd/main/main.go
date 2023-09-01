@@ -20,14 +20,14 @@ func main() {
     // Connect to database
     db, err := repositories.NewDatabase(config.DatabaseFile)
     if err != nil {
-        log.Fatal(errors.New("could not connect to database due to: " + err.Error()))
+        log.Fatal(errors.New("Could not connect to database due to: " + err.Error()))
     }
     defer db.Close()
 
     // Start TCP server
     listener, err := net.Listen("tcp", fmt.Sprintf(":%v", config.Port))
     if err != nil {
-        log.Fatal(errors.New("could not start TCP server due to: " + err.Error()))
+        log.Fatal(errors.New("Could not start TCP server due to: " + err.Error()))
     }
     defer listener.Close()
 
@@ -38,7 +38,7 @@ func main() {
             conn, err := listener.Accept()
 
             if err != nil {
-                log.Println("could not accept connection due to: ", err.Error())
+                log.Println("Could not accept connection due to: ", err.Error())
                 continue
             }
 

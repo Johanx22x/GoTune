@@ -6,5 +6,5 @@ import (
 )
 
 func Exec(command string, args []string) error {
-    return errors.New(fmt.Sprintf("command '%v' not found", args[0]))
+    return errors.New(fmt.Sprintf("command '%v' not found", command))
 }
