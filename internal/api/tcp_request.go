@@ -9,8 +9,8 @@ import (
     "github.com/Johanx22x/GoTune/internal/db/repositories"
 )
 
-// ProcessTCPRequest processes a TCP request
-func ProcessTCPRequest(message string, db *sql.DB) (string, error) {
+// ProcessRequest processes a TCP request
+func ProcessRequest(message string, db *sql.DB) (string, error) {
     words := strings.Split(message, " ")
 
     switch words[0] {

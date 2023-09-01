@@ -12,6 +12,8 @@ type Config struct {
 
     Port string         // The port to run the server on
     Debug bool          // Whether to run in debug mode
+
+    Version string      // The version of GoTune
 }
 
 // LoadConfig loads the default configuration
@@ -29,6 +31,8 @@ func LoadConfig(debug bool) *Config {
 
     config.Port = "8080"
     config.Debug = debug
+
+    config.Version = "0.1.0"
 
     return config
 }

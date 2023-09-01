@@ -27,7 +27,7 @@ func HandleConnection(conn net.Conn, db *sql.DB) {
     fmt.Println("Message received:", message)
     
     // Process message
-    response, err := ProcessTCPRequest(message, db)
+    response, err := ProcessRequest(message, db)
     if err != nil {
         fmt.Println("Error processing message:", err)
         conn.Write([]byte("ERROR"))

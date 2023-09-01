@@ -3,10 +3,13 @@ package main
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net"
+    "sync"
 
 	"github.com/Johanx22x/GoTune"
 	"github.com/Johanx22x/GoTune/internal/api"
+	"github.com/Johanx22x/GoTune/internal/command"
 	"github.com/Johanx22x/GoTune/internal/db"
 )
 
@@ -17,29 +20,42 @@ func main() {
     // Connect to database
     db, err := repositories.NewDatabase(config.DatabaseFile)
     if err != nil {
-        panic(errors.New("could not connect to database"))
+        log.Fatal(errors.New("could not connect to database due to: " + err.Error()))
     }
-    fmt.Println("Database connection established")
     defer db.Close()
 
     // Start TCP server
     listener, err := net.Listen("tcp", fmt.Sprintf(":%v", config.Port))
     if err != nil {
-        panic(errors.New("could not start TCP server"))
+        log.Fatal(errors.New("could not start TCP server due to: " + err.Error()))
     }
-    fmt.Println("TCP server started")
     defer listener.Close()
 
     // Receive connections
-    for {
-        conn, err := listener.Accept()
+    var wg sync.WaitGroup
+    go func() {
+        for {
+            conn, err := listener.Accept()
 
-        if err != nil {
-            fmt.Println("could not accept connection")
-            continue
+            if err != nil {
+                log.Println("could not accept connection due to: ", err.Error())
+                continue
+            }
+
+            wg.Add(1)
+
+            // Deploy goroutine to handle connection
+            go func() {
+                defer wg.Done()
+                api.HandleConnection(conn, db)
+            }()
         }
+    }()
 
-        // Deploy goroutine to handle connection
-        go api.HandleConnection(conn, db)
-    }
+    fmt.Println("GoTune v" + config.Version + " is now listening for connections on port " + config.Port)
+    fmt.Println("Type 'help' for a list of commands")
+    for command.Listen() { }
+
+    // Wait for all goroutines to finish
+    wg.Wait()
 }
